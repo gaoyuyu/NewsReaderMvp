@@ -3,35 +3,40 @@ package com.gaoyy.newsreadermvp.news;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.gaoyy.newsreadermvp.R;
+import com.gaoyy.newsreadermvp.adapter.NewsListAdapter;
 import com.gaoyy.newsreadermvp.api.Constant;
+import com.gaoyy.newsreadermvp.bean.News;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NewsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class NewsFragment extends Fragment implements NewsContract.View
+import java.util.ArrayList;
+import java.util.List;
+
+public class NewsFragment extends Fragment implements NewsContract.View, NewsListAdapter.OnItemClickListener
 {
     private NewsContract.Presenter mNewsPresenter;
+    private View rootView;
+    private NewsListAdapter newsListAdapter;
+    private List<News> list = new ArrayList<>();
+
+    private RecyclerView fragmentNewsRv;
+    private ProgressBar fragmentNewsProgressBar;
+
+    private void assignViews(View rootView)
+    {
+        fragmentNewsRv = (RecyclerView) rootView.findViewById(R.id.fragment_news_rv);
+        fragmentNewsProgressBar = (ProgressBar) rootView.findViewById(R.id.fragment_news_progressBar);
+    }
 
 
-
-
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final String LOG_TAG = NewsFragment.class.getSimpleName();
 
 
     public NewsFragment()
@@ -39,21 +44,10 @@ public class NewsFragment extends Fragment implements NewsContract.View
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NewsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static NewsFragment newInstance(String param1, String param2)
+    public static NewsFragment newInstance()
     {
         NewsFragment fragment = new NewsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,8 +58,7 @@ public class NewsFragment extends Fragment implements NewsContract.View
         super.onCreate(savedInstanceState);
         if (getArguments() != null)
         {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            //get Params here
         }
     }
 
@@ -73,31 +66,45 @@ public class NewsFragment extends Fragment implements NewsContract.View
     public void onResume()
     {
         super.onResume();
-//        mNewsPresenter.start();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_news, container, false);
+        if(rootView == null )
+        {
+            rootView = inflater.inflate(R.layout.fragment_news, container, false);
+        }
+        assignViews(rootView);
         String url = Constant.NEWS_URL + "?type=" + getResources().getString(getArguments().getInt("type")) + "&key=" + Constant.APPKEY;
+        newsListAdapter = new NewsListAdapter(getActivity(), list);
+        fragmentNewsRv.setAdapter(newsListAdapter);
+        fragmentNewsRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mNewsPresenter = new NewsPresenter(this);
-        mNewsPresenter.loadNewsData(getActivity(),url);
+        mNewsPresenter.loadNewsData(getActivity(), url);
+        newsListAdapter.setOnItemClickListener(this);
         return rootView;
     }
 
     @Override
     public void showLoading(String msg)
     {
-        Log.e("NewsFragment","showLoading==="+msg);
+        fragmentNewsProgressBar.setVisibility(View.VISIBLE);
+        fragmentNewsRv.setVisibility(View.GONE);
     }
 
     @Override
     public void hideLoading()
     {
-        Log.e("NewsFragment","hideLoading===");
+        fragmentNewsProgressBar.setVisibility(View.GONE);
+        fragmentNewsRv.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showNews(List<News> list)
+    {
+        newsListAdapter.updateData(list);
     }
 
     @Override
@@ -109,10 +116,16 @@ public class NewsFragment extends Fragment implements NewsContract.View
     @Override
     public void setPresenter(NewsContract.Presenter presenter)
     {
-        Log.i("NewsFragment", "setPresenter");
-        if(presenter != null)
+        Log.i(LOG_TAG, "setPresenter");
+        if (presenter != null)
         {
             mNewsPresenter = presenter;
         }
+    }
+
+    @Override
+    public void onItemClick(View view, int position)
+    {
+        mNewsPresenter.onItemClick(view,position);
     }
 }

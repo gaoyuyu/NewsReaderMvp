@@ -18,13 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MainFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MainFragment extends Fragment implements MainContract.View
 {
+    private static final String LOG_TAG= MainFragment.class.getSimpleName();
+
 
     private int[] newsType = {R.string.top, R.string.shehui, R.string.guonei, R.string.guoji,
             R.string.yule, R.string.tiyu, R.string.junshi, R.string.keji, R.string.caijing, R.string.shishang};
@@ -37,12 +34,6 @@ public class MainFragment extends Fragment implements MainContract.View
 
     private View rootView;
 
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
     private TabLayout mainTablayout;
     private ViewPager mainViewpager;
 
@@ -57,13 +48,9 @@ public class MainFragment extends Fragment implements MainContract.View
     {
     }
 
-    public static MainFragment newInstance(String param1, String param2)
+    public static MainFragment newInstance()
     {
         MainFragment fragment = new MainFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -73,9 +60,7 @@ public class MainFragment extends Fragment implements MainContract.View
         super.onCreate(savedInstanceState);
         if (getArguments() != null)
         {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-            Log.i("Main", mParam1 + "===" + mParam2);
+            //get Params here
         }
     }
 
@@ -89,6 +74,7 @@ public class MainFragment extends Fragment implements MainContract.View
         }
 
         assignViews(rootView);
+
         for (int i = 0; i < newsType.length; i++)
         {
             Bundle bundle = new Bundle();
@@ -112,6 +98,7 @@ public class MainFragment extends Fragment implements MainContract.View
     public void onResume()
     {
         super.onResume();
+        Log.i(LOG_TAG,"onResume");
         mMainPresenter.start();
     }
 
@@ -125,7 +112,7 @@ public class MainFragment extends Fragment implements MainContract.View
     @Override
     public void setPresenter(MainContract.Presenter presenter)
     {
-        Log.i("MainFragment", "setPresenter");
+        Log.i(LOG_TAG, "setPresenter");
         if (presenter != null)
         {
             mMainPresenter = presenter;

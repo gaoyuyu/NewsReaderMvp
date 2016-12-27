@@ -36,7 +36,6 @@ public class NewsPagerAdapter extends FragmentStatePagerAdapter
     @Override
     public Fragment getItem(int position)
     {
-//        new NewsPresenter(fragmentList.get(position));
         return fragmentList.get(position);
     }
 

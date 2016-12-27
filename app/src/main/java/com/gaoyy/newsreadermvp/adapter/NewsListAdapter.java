@@ -1,6 +1,7 @@
 package com.gaoyy.newsreadermvp.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,19 +55,17 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
     {
-//        NewsViewHolder newsViewHolder = (NewsViewHolder) holder;
-//        News news = data.get(position);
-//
-//        Uri picUri = Uri.parse(news.getThumbnail_pic_s());
-//        newsViewHolder.itemNewsImg.setHierarchy(Tool.getCommonGenericDraweeHierarchy(context));
-//        newsViewHolder.itemNewsImg.setController(Tool.getCommonDraweeController(picUri, newsViewHolder.itemNewsImg));
-//
-//        newsViewHolder.itemNewsTitle.setText(news.getTitle());
-//        newsViewHolder.itemNewsDate.setText(news.getAuthor_name() + "" + news.getDate());
-//        if(onItemClickListener != null)
-//        {
-//            newsViewHolder.itemNewsLayout.setOnClickListener(new BasicOnClickListener(newsViewHolder));
-//        }
+        NewsViewHolder newsViewHolder = (NewsViewHolder) holder;
+        News news = data.get(position);
+
+        Uri picUri = Uri.parse(news.getThumbnail_pic_s());
+
+        newsViewHolder.itemNewsTitle.setText(news.getTitle());
+        newsViewHolder.itemNewsDate.setText(news.getAuthor_name() + "" + news.getDate());
+        if(onItemClickListener != null)
+        {
+            newsViewHolder.itemNewsLayout.setOnClickListener(new BasicOnClickListener(newsViewHolder));
+        }
     }
 
     @Override
@@ -86,9 +85,9 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public NewsViewHolder(View itemView)
         {
             super(itemView);
-//            itemNewsTitle = (TextView) itemView.findViewById(R.id.item_news_title);
-//            itemNewsDate = (TextView) itemView.findViewById(R.id.item_news_date);
-//            itemNewsLayout = (RelativeLayout) itemView.findViewById(R.id.item_news_layout);
+            itemNewsTitle = (TextView) itemView.findViewById(R.id.item_news_title);
+            itemNewsDate = (TextView) itemView.findViewById(R.id.item_news_date);
+            itemNewsLayout = (RelativeLayout) itemView.findViewById(R.id.item_news_layout);
         }
     }
 
@@ -97,6 +96,27 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     {
         this.data = s;
         notifyDataSetChanged();
+    }
+
+    private class BasicOnClickListener implements View.OnClickListener
+    {
+        private NewsViewHolder newsViewHolder;
+
+        public BasicOnClickListener(NewsViewHolder newsViewHolder)
+        {
+            this.newsViewHolder = newsViewHolder;
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+            switch (v.getId())
+            {
+                case R.id.item_news_layout:
+                    onItemClickListener.onItemClick(newsViewHolder.itemNewsLayout, newsViewHolder.getLayoutPosition());
+                    break;
+            }
+        }
     }
 
 }

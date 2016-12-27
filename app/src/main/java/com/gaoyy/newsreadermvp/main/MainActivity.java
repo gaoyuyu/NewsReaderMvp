@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity
         MainFragment mainFragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.content_frame);
         if (mainFragment == null)
         {
-            mainFragment = MainFragment.newInstance("p1", "p2");
+            mainFragment = MainFragment.newInstance();
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),mainFragment, R.id.content_frame);
         }
         new MainPresenter(mainFragment);

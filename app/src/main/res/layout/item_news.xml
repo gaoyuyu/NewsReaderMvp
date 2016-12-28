@@ -6,6 +6,7 @@
     android:id="@+id/item_news_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
     >
 
     <ImageView
@@ -26,6 +27,9 @@
         android:layout_toEndOf="@+id/item_news_img"
         android:layout_toRightOf="@+id/item_news_img"
         android:text="Medium Text"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:layout_marginRight="5dp"
         android:textColor="@color/black"
         android:textSize="18sp"/>
 
@@ -37,6 +41,7 @@
         android:layout_alignLeft="@+id/item_news_title"
         android:layout_alignStart="@+id/item_news_title"
         android:text="Medium Text"
+        android:layout_marginRight="5dp"
         android:textColor="@color/black_99"
         android:textSize="12sp"/>
 

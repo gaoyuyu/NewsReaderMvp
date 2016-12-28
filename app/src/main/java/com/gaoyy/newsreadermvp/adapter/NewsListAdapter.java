@@ -1,16 +1,17 @@
 package com.gaoyy.newsreadermvp.adapter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gaoyy.newsreadermvp.R;
 import com.gaoyy.newsreadermvp.bean.NewsModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -58,11 +59,17 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         NewsViewHolder newsViewHolder = (NewsViewHolder) holder;
         NewsModel.ResultBean.DataBean news = data.get(position);
 
-        Uri picUri = Uri.parse(news.getThumbnail_pic_s());
-
         newsViewHolder.itemNewsTitle.setText(news.getTitle());
-        newsViewHolder.itemNewsDate.setText(news.getAuthor_name() + "" + news.getDate());
-        if(onItemClickListener != null)
+        newsViewHolder.itemNewsDate.setText(news.getAuthor_name() + "        " + news.getDate());
+
+        //Picasso加载图片
+        Picasso.with(context)
+                .load(news.getThumbnail_pic_s03())
+                .fit()
+                .into(newsViewHolder.itemNewsImg);
+
+
+        if (onItemClickListener != null)
         {
             newsViewHolder.itemNewsLayout.setOnClickListener(new BasicOnClickListener(newsViewHolder));
         }
@@ -77,8 +84,11 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public static class NewsViewHolder extends RecyclerView.ViewHolder
     {
+
+
         private TextView itemNewsTitle;
         private TextView itemNewsDate;
+        private ImageView itemNewsImg;
         private RelativeLayout itemNewsLayout;
 
 
@@ -87,6 +97,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(itemView);
             itemNewsTitle = (TextView) itemView.findViewById(R.id.item_news_title);
             itemNewsDate = (TextView) itemView.findViewById(R.id.item_news_date);
+            itemNewsImg = (ImageView) itemView.findViewById(R.id.item_news_img);
             itemNewsLayout = (RelativeLayout) itemView.findViewById(R.id.item_news_layout);
         }
     }

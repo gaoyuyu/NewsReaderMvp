@@ -68,6 +68,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 .fit()
                 .into(newsViewHolder.itemNewsImg);
 
+        newsViewHolder.itemNewsLayout.setTag(news);
+
 
         if (onItemClickListener != null)
         {

@@ -117,6 +117,7 @@ public class NewsFragment extends Fragment implements NewsContract.View, NewsLis
     public void showNews2(List<NewsModel.ResultBean.DataBean> list)
     {
         newsListAdapter.updateData(list);
+        this.list = list;
     }
 
     @Override
@@ -138,6 +139,7 @@ public class NewsFragment extends Fragment implements NewsContract.View, NewsLis
     @Override
     public void onItemClick(View view, int position)
     {
-        mNewsPresenter.onItemClick(view,position);
+        NewsModel.ResultBean.DataBean news = (NewsModel.ResultBean.DataBean)view.getTag();
+        mNewsPresenter.onItemClick(getActivity(),news);
     }
 }

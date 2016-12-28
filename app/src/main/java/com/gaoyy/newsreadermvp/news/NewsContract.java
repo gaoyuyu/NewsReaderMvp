@@ -33,7 +33,7 @@ public class NewsContract
         void loadNewsData(Context context, String url);
         void loadNewsData2(Map<String,String> map);
 
-        void onItemClick(android.view.View view, int position);
+        void onItemClick(Context context,NewsModel.ResultBean.DataBean news);
 
     }
 }

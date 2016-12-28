@@ -1,13 +1,14 @@
 package com.gaoyy.newsreadermvp.news;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
-import android.view.View;
 
 import com.gaoyy.newsreadermvp.api.Api;
 import com.gaoyy.newsreadermvp.api.Constant;
 import com.gaoyy.newsreadermvp.bean.News;
 import com.gaoyy.newsreadermvp.bean.NewsModel;
+import com.gaoyy.newsreadermvp.newsdetail.NewsDetailActivity;
 import com.gaoyy.newsreadermvp.util.Okhttp3Utils;
 import com.gaoyy.newsreadermvp.util.OkhttpUtils;
 import com.google.gson.Gson;
@@ -131,9 +132,14 @@ public class NewsPresenter implements NewsContract.Presenter
     }
 
     @Override
-    public void onItemClick(View view, int position)
+    public void onItemClick(Context context,NewsModel.ResultBean.DataBean news)
     {
-        Log.e(LOG_TAG, "onItemClick" + position);
+        Intent intent = new Intent(context, NewsDetailActivity.class);
+        
+        intent.putExtra("title",news.getTitle());
+        intent.putExtra("titleImg",news.getThumbnail_pic_s03());
+        intent.putExtra("url",news.getUrl());
+        context.startActivity(intent);
     }
 
     @Override

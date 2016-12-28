@@ -2,7 +2,9 @@ package com.gaoyy.newsreadermvp.news;
 
 
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,6 +18,7 @@ import com.gaoyy.newsreadermvp.adapter.NewsListAdapter;
 import com.gaoyy.newsreadermvp.api.Constant;
 import com.gaoyy.newsreadermvp.bean.News;
 import com.gaoyy.newsreadermvp.bean.NewsModel;
+import com.gaoyy.newsreadermvp.util.TransitionHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -140,6 +143,14 @@ public class NewsFragment extends Fragment implements NewsContract.View, NewsLis
     public void onItemClick(View view, int position)
     {
         NewsModel.ResultBean.DataBean news = (NewsModel.ResultBean.DataBean)view.getTag();
-        mNewsPresenter.onItemClick(getActivity(),news);
+
+        View img = view.findViewById(R.id.item_news_img);
+        View title = view.findViewById(R.id.item_news_title);
+
+        Pair<View, String>[] pairs = TransitionHelper.createSafeTransitionParticipants
+                (getActivity(), false,new Pair<>(img, "img"),new Pair<>(title, "title"));
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), pairs);
+
+        mNewsPresenter.onItemClick(getActivity(),news,options);
     }
 }

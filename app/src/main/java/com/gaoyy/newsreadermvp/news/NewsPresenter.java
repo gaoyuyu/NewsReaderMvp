@@ -2,6 +2,7 @@ package com.gaoyy.newsreadermvp.news;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.util.Log;
 
 import com.gaoyy.newsreadermvp.api.Api;
@@ -132,14 +133,14 @@ public class NewsPresenter implements NewsContract.Presenter
     }
 
     @Override
-    public void onItemClick(Context context,NewsModel.ResultBean.DataBean news)
+    public void onItemClick(Context context,NewsModel.ResultBean.DataBean news,ActivityOptionsCompat options)
     {
-        Intent intent = new Intent(context, NewsDetailActivity.class);
-        
+        Intent intent = new Intent();
+        intent.setClass(context, NewsDetailActivity.class);
         intent.putExtra("title",news.getTitle());
         intent.putExtra("titleImg",news.getThumbnail_pic_s03());
         intent.putExtra("url",news.getUrl());
-        context.startActivity(intent);
+        context.startActivity(intent,options.toBundle());
     }
 
     @Override

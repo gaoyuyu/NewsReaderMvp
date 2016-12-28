@@ -1,11 +1,14 @@
 package com.gaoyy.newsreadermvp.newsdetail;
 
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.ChangeBounds;
 import android.view.MenuItem;
+import android.view.Window;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -39,6 +42,11 @@ public class NewsDetailActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            getWindow().setExitTransition(new ChangeBounds());
+        }
         setContentView(R.layout.activity_news_detail);
         assignViews();
 
@@ -105,7 +113,14 @@ public class NewsDetailActivity extends AppCompatActivity
         switch (id)
         {
             case android.R.id.home:
-                finish();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                {
+                    finishAfterTransition();
+                }
+                else
+                {
+                    finish();
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);

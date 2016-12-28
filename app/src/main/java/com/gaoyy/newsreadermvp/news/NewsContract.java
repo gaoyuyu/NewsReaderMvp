@@ -1,6 +1,7 @@
 package com.gaoyy.newsreadermvp.news;
 
 import android.content.Context;
+import android.support.v4.app.ActivityOptionsCompat;
 
 import com.gaoyy.newsreadermvp.BasePresenter;
 import com.gaoyy.newsreadermvp.BaseView;
@@ -33,7 +34,7 @@ public class NewsContract
         void loadNewsData(Context context, String url);
         void loadNewsData2(Map<String,String> map);
 
-        void onItemClick(Context context,NewsModel.ResultBean.DataBean news);
+        void onItemClick(Context context,NewsModel.ResultBean.DataBean news,ActivityOptionsCompat options);
 
     }
 }

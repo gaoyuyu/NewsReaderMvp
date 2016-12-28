@@ -15,16 +15,19 @@ import com.gaoyy.newsreadermvp.R;
 import com.gaoyy.newsreadermvp.adapter.NewsListAdapter;
 import com.gaoyy.newsreadermvp.api.Constant;
 import com.gaoyy.newsreadermvp.bean.News;
+import com.gaoyy.newsreadermvp.bean.NewsModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NewsFragment extends Fragment implements NewsContract.View, NewsListAdapter.OnItemClickListener
 {
     private NewsContract.Presenter mNewsPresenter;
     private View rootView;
     private NewsListAdapter newsListAdapter;
-    private List<News> list = new ArrayList<>();
+    private List<NewsModel.ResultBean.DataBean> list = new ArrayList<>();
 
     private RecyclerView fragmentNewsRv;
     private ProgressBar fragmentNewsProgressBar;
@@ -82,7 +85,10 @@ public class NewsFragment extends Fragment implements NewsContract.View, NewsLis
         fragmentNewsRv.setAdapter(newsListAdapter);
         fragmentNewsRv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mNewsPresenter = new NewsPresenter(this);
-        mNewsPresenter.loadNewsData(getActivity(), url);
+        Map<String,String> map = new HashMap<>();
+        map.put("type",getResources().getString(getArguments().getInt("type")));
+        map.put("key",Constant.APPKEY);
+        mNewsPresenter.loadNewsData2(map);
         newsListAdapter.setOnItemClickListener(this);
         return rootView;
     }
@@ -103,6 +109,12 @@ public class NewsFragment extends Fragment implements NewsContract.View, NewsLis
 
     @Override
     public void showNews(List<News> list)
+    {
+//        newsListAdapter.updateData(list);
+    }
+
+    @Override
+    public void showNews2(List<NewsModel.ResultBean.DataBean> list)
     {
         newsListAdapter.updateData(list);
     }

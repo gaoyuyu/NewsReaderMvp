@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gaoyy.newsreadermvp.R;
-import com.gaoyy.newsreadermvp.bean.News;
+import com.gaoyy.newsreadermvp.bean.NewsModel;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import java.util.List;
 public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
     private LayoutInflater inflater;
-    private List<News> data;
+    private List<NewsModel.ResultBean.DataBean> data;
     private Context context;
     private OnItemClickListener onItemClickListener;
 
@@ -37,7 +37,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
 
-    public NewsListAdapter(Context context, List<News> data)
+    public NewsListAdapter(Context context, List<NewsModel.ResultBean.DataBean> data)
     {
         this.context = context;
         this.data = data;
@@ -56,7 +56,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
     {
         NewsViewHolder newsViewHolder = (NewsViewHolder) holder;
-        News news = data.get(position);
+        NewsModel.ResultBean.DataBean news = data.get(position);
 
         Uri picUri = Uri.parse(news.getThumbnail_pic_s());
 
@@ -92,7 +92,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
 
-    public void updateData(List<News> s)
+    public void updateData(List<NewsModel.ResultBean.DataBean> s)
     {
         this.data = s;
         notifyDataSetChanged();

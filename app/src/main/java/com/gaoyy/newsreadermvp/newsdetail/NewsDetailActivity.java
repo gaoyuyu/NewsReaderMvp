@@ -3,16 +3,20 @@ package com.gaoyy.newsreadermvp.newsdetail;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.ChangeBounds;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,21 +25,28 @@ import com.squareup.picasso.Picasso;
 
 public class NewsDetailActivity extends AppCompatActivity
 {
+    private CoordinatorLayout newsDetailCoordinatorlayout;
+    private AppBarLayout newsDetailAppbarlayout;
     private CollapsingToolbarLayout newsDetailCollapsingToolbarLayout;
-    private Toolbar newsDetailToolbar;
     private RelativeLayout newsDetailHead;
     private ImageView newsDetailImg;
     private TextView newsDetailTitle;
+    private Toolbar newsDetailToolbar;
     private WebView newsDetailWebview;
+    private ProgressBar newsDetailProgressbar;
 
     private void assignViews() {
+        newsDetailCoordinatorlayout = (CoordinatorLayout) findViewById(R.id.news_detail_coordinatorlayout);
+        newsDetailAppbarlayout = (AppBarLayout) findViewById(R.id.news_detail_appbarlayout);
         newsDetailCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.news_detail_collapsingToolbarLayout);
-        newsDetailToolbar = (Toolbar) findViewById(R.id.news_detail_toolbar);
         newsDetailHead = (RelativeLayout) findViewById(R.id.news_detail_head);
         newsDetailImg = (ImageView) findViewById(R.id.news_detail_img);
         newsDetailTitle = (TextView) findViewById(R.id.news_detail_title);
+        newsDetailToolbar = (Toolbar) findViewById(R.id.news_detail_toolbar);
         newsDetailWebview = (WebView) findViewById(R.id.news_detail_webview);
+        newsDetailProgressbar = (ProgressBar) findViewById(R.id.news_detail_progressbar);
     }
+
 
 
     @Override
@@ -93,12 +104,16 @@ public class NewsDetailActivity extends AppCompatActivity
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon)
             {
+                newsDetailCoordinatorlayout.setVisibility(View.GONE);
+                newsDetailProgressbar.setVisibility(View.VISIBLE);
                 super.onPageStarted(view, url, favicon);
             }
 
             @Override
             public void onPageFinished(WebView view, String url)
             {
+                newsDetailCoordinatorlayout.setVisibility(View.VISIBLE);
+                newsDetailProgressbar.setVisibility(View.GONE);
                 super.onPageFinished(view, url);
             }
         });
